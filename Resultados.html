@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUREGLOW</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Estilos adicionales */
+        header {
+            margin-bottom: 40px; /* Espacio entre el encabezado y el contenido principal */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px; /* Espacio entre la imagen y los resultados */
+        }
+
+        .content-container img {
+            display: block;
+            width: 100%;
+            max-width: 500px; /* Ancho máximo de la imagen */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-container {
+            background-color: #fff; /* Fondo blanco */
+            padding: 20px; /* Añadir relleno */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            width: 100%;
+            max-width: 600px; /* Ancho máximo del contenedor de resultados */
+        }
+
+        .results {
+            color: #01579b; /* Color del texto */
+            font-size: 20px;
+        }
+
+        #productos-recomendados-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #01579b;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px; /* Espacio superior */
+        }
+
+        #productos-recomendados-button:hover {
+            background-color: #012a4a;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left"><a href="index.html">PUREGLOW</a></div>
+        <div class="header-center">
+        </div>
+        <div class="header-right"><a href="Login.html">Login</a></div>
+    </header>
+    <div class="container">
+        <div class="content-container">
+            <img src="Imagenes/Img1.jpg" alt="Descripción de la imagen">
+        </div>
+        <div class="results-container">
+            <div class="results">
+                <!-- Aquí se mostrarán los resultados de las predicciones -->
+                <button id="productos-recomendados-button">Productos Recomendados</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Recuperar las variables del sessionStorage
+        const pielPrediction = sessionStorage.getItem('pielPrediction');
+        const imperfeccionesPrediction = sessionStorage.getItem('imperfeccionesPrediction');
+
+        // Función para mostrar los resultados de las predicciones
+        function showResults() {
+            const resultsContainer = document.querySelector('.results');
+
+            // Mostrar los resultados de las predicciones de tono de piel
+            const pielResultElement = document.createElement('p');
+            pielResultElement.textContent = `TONO DE PIEL: ${pielPrediction}`;
+            resultsContainer.appendChild(pielResultElement);
+
+            // Mostrar los resultados de las predicciones de imperfecciones
+            const imperfeccionesResultElement = document.createElement('p');
+            const parsedImperfecciones = JSON.parse(imperfeccionesPrediction);
+            const imperfeccionesText = parsedImperfecciones.map(imperfeccion => `${imperfeccion.className} ${Math.round(imperfeccion.probability * 100)}%`).join(', ');
+            imperfeccionesResultElement.textContent = `IMPERFECCIONES: ${imperfeccionesText}`;
+            resultsContainer.appendChild(imperfeccionesResultElement);
+        }
+
+        // Llama a la función para mostrar los resultados cuando se carga la página
+        window.onload = showResults;
+
+        // Agregar evento de clic al botón de productos recomendados
+        document.getElementById('productos-recomendados-button').addEventListener('click', function() {
+            // Aquí puedes colocar la acción que desees, por ejemplo, redirigir a otra página
+            window.location.href = 'Productos.html'; // Cambia 'productos_recomendados.html' por la URL deseada
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUREGLOW</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos adicionales */
+        body {
+            font-family: "Fjalla One", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f7fa; /* Fondo celeste claro */
+            color: #01579b; /* Color del texto */
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px; /* Espaciado alrededor del contenedor */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-start; /* Alinear los botones a la derecha */
+            margin-top: 20px; /* Espacio superior */
+            margin-bottom: 20px; /* Espacio inferior */
+        }
+
+        .scanner-button {
+            margin: 0 10px; /* Espacio entre los botones */
+            padding: 10px 20px; /* Espaciado interno */
+            font-size: 30px; /* Tamaño de fuente */
+            color: #fff; /* Color del texto */
+            background-color: #00796b; /* Color de fondo */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cursor de puntero */
+            transition: background-color 0.3s; /* Transición suave */
+        }
+
+        .scanner-button:hover {
+            background-color: #004d40; /* Color de fondo al pasar el cursor */
+        }
+
+        .webcam-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Alinear las predicciones a la izquierda */
+            margin-top: 20px; /* Espacio superior */
+            position: relative; /* Ajuste la posición del contenedor */
+        }
+
+        .webcam-label-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Alinear las predicciones a la izquierda */
+            margin-top: 20px; /* Espacio superior */
+            position: relative; /* Ajuste la posición del contenedor */
+        }
+
+        #webcam-container canvas,
+        #captured-image-container img {
+            width: 550px;
+            height: 550px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #label-container {
+            position: absolute;
+            top: 20px; /* Ajuste el margen superior */
+            right: 20px; /* Ajuste el margen derecho */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Alinear las predicciones a la izquierda */
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            padding: 20px; /* Ajuste el espacio interior */
+            border-radius: 10px; /* Hacer que los bordes sean más redondeados */
+            z-index: 1; /* Asegurar que esté delante del canvas */
+            font-size: 30px; /* Tamaño de letra más grande */
+        }
+
+        #label-container > div {
+            margin-bottom: 10px;
+        }
+
+        #skin-tone-prediction-container {
+            text-align: left; /* Alinear el texto a la izquierda */
+            margin-top: 20px;
+           
+        }
+
+        #next-button {
+            display: none; /* Inicialmente oculto */
+            align-items: end;
+        }
+        
+        #retry-button {
+            display: none; /* Inicialmente oculto */
+           margin-left: 200px;
+        }
+
+        .text-button-container {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .text-button-container > * {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left"><a href="index.html">PUREGLOW</a></div>
+        <div class="header-center">
+            <!-- Texto eliminado -->
+        </div>
+        <div class="header-right"><a href="Login.html">Login</a></div>
+    </header>
+    
+
+    <div class="container">
+        <div class="webcam-label-container" id="webcam-container">
+            <div id="label-container"></div>
+        </div>
+        <div class="text-button-container" style="
+        width: 997px;
+        height: 571px;" >
+        
+            <div id="scan-instruction">PRIMERO VEAMOS CUAL ES TU TONO DE PIEL</div>
+            <div class="button-container">
+                <button type="button" id="capture-button" class="scanner-button" onclick="captureImage()" style="display: none;" disabled>Capturar Imagen</button>
+            </div>
+            <div id="skin-tone-prediction-container">
+                <div id="skin-tone-prediction"></div>
+                <button id="retry-button" class="scanner-button" onclick="retryCapture()">Tomar foto de nuevo</button>
+                <button id="next-button" class="scanner-button" onclick="nextScanner()">Siguiente Scanner</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="captured-image-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script type="text/javascript">
+        // El enlace a tu modelo proporcionado por el panel de exportación de Teachable Machine
+        const URL = "https://teachablemachine.withgoogle.com/models/jS0F8uzJQ/";
+        
+        let model, webcam, labelContainer, maxPredictions, loopRequest;
+        // Variable para almacenar la predicción de tono de piel
+        let piel;
+        
+        // Cargar el modelo de imagen y configurar la cámara web
+        async function init() {
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+        
+            // Cargar el modelo y los metadatos
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+        
+            // Función de conveniencia para configurar una cámara web
+            const flip = true; // Si debe voltear la cámara web
+            webcam = new tmImage.Webcam(550, 550, flip); // Ancho, alto, voltear
+            await webcam.setup(); // Solicitar acceso a la cámara web
+            await webcam.play();
+            loopRequest = window.requestAnimationFrame(loop);
+        
+            // Agregar elementos al DOM
+            document.getElementById("webcam-container").appendChild(webcam.canvas);
+            labelContainer = document.getElementById("label-container");
+            for (let i = 0; i < maxPredictions; i++) { // Y etiquetas de clase
+                labelContainer.appendChild(document.createElement("div"));
+            }
+        
+            // Mostrar el botón de captura una vez que la cámara web esté lista
+            document.getElementById("capture-button").style.display = "inline-block";
+            document.getElementById("capture-button").disabled = false;
+        }
+        
+        async function loop() {
+            webcam.update(); // Actualizar el marco de la cámara web
+            await predict();
+            loopRequest = window.requestAnimationFrame(loop);
+        }
+        
+        // Ejecutar la imagen de la cámara web a través del modelo de imagen
+        async function predict() {
+            // Predecir puede tomar una imagen, video o elemento de lienzo HTML
+            const prediction = await model.predict(webcam.canvas);
+            let maxPrediction = { className: '', probability: 0 };
+            for (let i = 0; i < maxPredictions; i++) {
+                const classPrediction = `${prediction[i].className}: ${prediction[i].probability.toFixed(2) * 100}%`;
+                labelContainer.childNodes[i].innerHTML = classPrediction;
+                if (prediction[i].probability > maxPrediction.probability) {
+                    maxPrediction = prediction[i];
+                }
+            }
+    
+            // Asignar la predicción del tono de piel a la variable 'piel'
+            piel = maxPrediction.className;
+        }
+        
+        async function captureImage() {
+            // Detener la cámara web y cancelar el bucle de animación del fotograma
+            await webcam.stop();
+            window.cancelAnimationFrame(loopRequest);
+        
+            // Crear un elemento de imagen para mostrar la imagen capturada
+            const imageElement = document.createElement("img");
+            imageElement.src = webcam.canvas.toDataURL("image/png");
+            imageElement.style.width = "550px"; // Establecer el tamaño de visualización de la imagen capturada
+            imageElement.style.height = "550px";
+        
+            // Borrar el contenido anterior y agregar la nueva imagen capturada al DOM
+            const webcamContainer = document.getElementById("webcam-container");
+            webcamContainer.innerHTML = ""; // Limpiar contenido anterior
+            webcamContainer.appendChild(imageElement); // Agregar la nueva imagen
+        
+            // Mostrar las predicciones en el momento de la captura
+            const prediction = await model.predict(webcam.canvas);
+            let maxPrediction = { className: '', probability: 0 };
+            for (let i = 0; i < maxPredictions; i++) {
+                const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+                labelContainer.childNodes[i].innerHTML = classPrediction;
+                if (prediction[i].probability > maxPrediction.probability) {
+                    maxPrediction = prediction[i];
+                }
+            }
+        
+            // Asignar la predicción del tono de piel a la variable 'piel'
+            piel = maxPrediction.className;
+        
+            // Mostrar la predicción del tono de piel en la parte inferior
+            const skinTonePredictionContainer = document.getElementById("skin-tone-prediction");
+            skinTonePredictionContainer.innerHTML = `TU TONO DE PIEL ES ${maxPrediction.className}: ${maxPrediction.probability.toFixed(2) * 100}%`;
+        
+            // Almacenar 'piel' en sessionStorage
+            sessionStorage.setItem('pielPrediction', piel);
+            
+        
+            // Mostrar el botón "Siguiente Scanner"
+            document.getElementById("next-button").style.display = "inline-block";
+            document.getElementById("retry-button").style.display = "inline-block";
+        }
+        
+        function nextScanner() {
+            // Redirigir a la siguiente página del scanner
+            window.location.href = "Imperfecciones.html";
+        }
+        function retryCapture() {
+            // Redirigir a la página Piel.html para capturar una nueva imagen
+            window.location.href = "Piel.html";
+        }
+            
+        // Iniciar la función init() automáticamente cuando se cargue la página
+        window.onload = init;
+    </script>
+</body>
+</html>

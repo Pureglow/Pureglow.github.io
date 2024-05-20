@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos Recomendados - PUREGLOW</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos adicionales */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #00bcd4;
+            margin-bottom: 40px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .product-card h3 {
+            color: #01579b;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .product-card p {
+            color: #333;
+            font-size: 16px;
+        }
+
+        .product-card .price {
+            color: #01579b;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-left"><a href="index.html">PUREGLOW</a></div>
+        <div class="header-center">
+            <span>Productos Recomendados</span>
+        </div>
+        <div class="header-right"><a href="index.html">Inicio</a></div>
+    </header>
+    <div class="container">
+        <!-- Aquí se mostrarán los productos recomendados -->
+        <div class="product-card">
+            <img src="Imagenes/producto_generico_1.jpg" alt="Producto genérico 1">
+            <h3>Producto genérico 1</h3>
+            <p>Descripción del producto genérico.</p>
+            <div class="price">$19.99</div>
+        </div>
+        <div class="product-card">
+            <img src="Imagenes/producto_generico_2.jpg" alt="Producto genérico 2">
+            <h3>Producto genérico 2</h3>
+            <p>Descripción del producto genérico.</p>
+            <div class="price">$29.99</div>
+        </div>
+    </div>
+
+    <script>
+        // Recuperar la variable del sessionStorage
+
+        const imperfeccionesPrediction = sessionStorage.getItem('imperfeccionesPrediction');
+
+        // Mostrar los resultados de las predicciones de imperfecciones
+        const parsedImperfecciones = JSON.parse(imperfeccionesPrediction);
+        const imperfeccionesText = parsedImperfecciones.map(imperfeccion => `${imperfeccion.className}`).join(', ');
+
+        // Funciones para mostrar productos según el tipo de piel
+        function showGranosProducts() {
+            // Aquí puedes agregar los productos recomendados para piel seca
+            const productsContainer = document.querySelector('.container');
+            productsContainer.innerHTML = `
+                <div class="product-card">
+                    <img src="Imagenes/CAED.avif" alt="Producto para piel grasa 1">
+                    <h3>Corrector Anti-imperfecciones Effaclar Duo+</h3>
+                    <p>Contiene niacinamida, ácido salicílico y procerad, que ayudan a reducir el tamaño y la cantidad de imperfecciones, así como a prevenir la aparición de marcas.</p>
+                    <div class="price">S/.101.10</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/OFAW.avif" alt="Producto para piel grasa 2">
+                    <h3>Neutrogena Oil-Free Acne Wash</h3>
+                    <p>Ayuda a eliminar la grasa y a destapar los poros, previniendo brotes futuros.</p>
+                    <div class="price">S/.44.00</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/SRJS.png" alt="Producto para piel grasa 2">
+                    <h3>Serum Revox Just Salicylic Acid 30ml Revox</h3>
+                    <p>El ácido salicílico es un eficaz exfoliante con capacidad de penetrar piel grasa y poros obstruidos para una limpieza profunda..</p>
+                    <div class="price">S/.29.90</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/CC.JPG" alt="Producto para piel grasa 2">
+                    <h3>Clean & Clear Advantage Acne Spot Treatment</h3>
+                    <p>Está diseñado para reducir el tamaño de las imperfecciones en un corto período de tiempo.</p>
+                    <div class="price">S/.24.90</div>
+                </div>
+                <!-- Agregar más productos según sea necesario -->
+            `;
+        }
+
+        function showManchasProducts() {
+            // Aquí puedes agregar los productos recomendados para piel mixta
+            const productsContainer = document.querySelector('.container');
+            productsContainer.innerHTML = `
+                <div class="product-card">
+                    <img src="Imagenes/SJA.png" alt="Producto para piel mixta 1">
+                    <h3>Serum Just Aha Acids 30ml Revox</h3>
+                    <p>Combate los tonos desiguales de la piel.Su fórmula es ligera y se absorbe rápidamente.Cruelty Free.</p>
+                    <div class="price">S/29.90</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/SKIN.png" alt="Producto para piel mixta 1">
+                    <h3>SKIN 1004 - Tónico Ampolla Madagascar Centella Tone Brightening Capsule Ampoule Mini</h3>
+                    <p>La fórmula también contiene exfoliantes suaves, como extractos de papaya y manzana, para eliminar las células muertas de la piel y lograr una piel suave.</p>
+                    <div class="price">S/28.80</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/mela.jpg" alt="Producto para piel mixta 1">
+                    <h3>La Roche-Posay Mela-D Pigment Control Glycolic Acid Serum</h3>
+                    <p> Este suero combina ácido glicólico, ácido kójico y LHA (lipo-hidroxiácido) para exfoliar y aclarar las manchas oscuras, promoviendo un tono de piel más uniforme.</p>
+                    <div class="price">S/167.50</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/SFCV.jpg" alt="Producto para piel mixta 1">
+                    <h3>Sérum Facial Cluny Vitamina C y Ácido Hialurónico</h3>
+                    <p>Este sérum es antioxidante y un fotoprotector que atenua las manchas de la piel y gracias a su textura fresca y ligera es de fácil absorción en la piel.</p>
+                    <div class="price">S/23.90</div>
+                </div>
+                <!-- Agregar más productos según sea necesario -->
+            `;
+        }
+
+        function showArrugasProducts() {
+            // Aquí puedes agregar los productos recomendados para piel grasa
+            const productsContainer = document.querySelector('.container');
+            productsContainer.innerHTML = `
+            <div class="product-card">
+                    <img src="Imagenes/RVC.png" alt="Producto para piel mixta 1">
+                    <h3>APLB - Retinol Vitamin C Vitamin E Ampoule Serum</h3>
+                    <p>Este suero en ampolla que lo hace todo combate los signos del envejecimiento e ilumina el cutis al mismo tiempo que brinda beneficios humectantes y calmantes.</p>
+                    <div class="price">S/36.90</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/RMS.jpg" alt="Producto para piel mixta 1">
+                    <h3>Regenerist Micro-Sculpting Cream de Olay</h3>
+                    <p> Esta crema hidratante contiene péptidos, niacinamida y ácido hialurónico, ingredientes clave en la lucha contra las arrugas.</p>
+                    <div class="price">S/86.30</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/ROC.jpg" alt="Producto para piel mixta 1">
+                    <h3>RoC Retinol Correxion Deep Wrinkle Night Cream</h3>
+                    <p> Este suero combina ácido glicólico, ácido kójico y LHA (lipo-hidroxiácido) para exfoliar y aclarar las manchas oscuras, promoviendo un tono de piel más uniforme.</p>
+                    <div class="price">S/67.70</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/APLB.png" alt="Producto para piel mixta 1">
+                    <h3>APLB - Sérum con Niacinamida Glutathione Niacinamide Ampoule Serum</h3>
+                    <p>Esta ampolla que lo hace todo ofrece beneficios iluminadores, hidratantes y antienvejecimiento para satisfacer todas sus necesidades de cuidado de la piel.</p>
+                    <div class="price">S/30.70</div>
+                </div>
+                <!-- Agregar más productos según sea necesario -->
+            `;
+        }
+        function showOjerasProducts() {
+            // Aquí puedes agregar los productos recomendados para piel grasa
+            const productsContainer = document.querySelector('.container');
+            productsContainer.innerHTML = `
+                <div class="product-card">
+                    <img src="Imagenes/NRWR.avif" alt="Producto para piel grasa 1">
+                    <h3>Neutrogena Rapid Wrinkle Repair® Retinol Eye Cream</h3>
+                    <p>Mejora los signos del envejecimiento de la piel alrededor de los ojos con esta crema para el contorno de ojos con retinol.</p>
+                    <div class="price">S/.74.40</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/PIGMENTCLAR.png" alt="Producto para piel grasa 2">
+                    <h3>MACQUEEN - Bálsamo facial Collagen Vita Wrinkle Multi Balm</h3>
+                    <p>Reduce visiblemente la aparición de ojeras azules causadas por la mala circulación.</p>
+                    <div class="price">S/.28.60</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/CRC.jpg" alt="Producto para piel grasa 2">
+                    <h3>Crema Reparadora Contorno de Ojos CeraVe</h3>
+                    <p>Reduce la apariencia de las ojeras y la hinchazón de los ojos. Fórmula no grasa y de rápida absorción. Adecuada para todo tipo de pieles..</p>
+                    <div class="price">S/.52.40</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/COGN.png" alt="Producto para piel grasa 2">
+                    <h3>APLB - Crema para Ojos Glutathione Niacinamide Eye Cream</h3>
+                    <p>Dígale adiós a los ojos cansados ​​e hinchados con esta crema para ojos cargada de glutatión y niacinamida</p>
+                    <div class="price">S/.36.90</div>
+                </div>
+                
+                <!-- Agregar más productos según sea necesario -->
+            `;
+        }
+
+        // Mostrar productos según el tipo de piel
+        switch (imperfeccionesText) {
+            case 'Granos':
+                showGranosProducts();
+                break;
+            case 'Manchas':
+                showManchasProducts();
+                break;
+            case 'Arrugas':
+                showArrugasProducts();
+                break;
+            case 'Ojeras':
+                showOjerasProducts();
+                break;
+            default:
+                // Mostrar productos genéricos si no se reconoce el tipo de piel
+                showGenericProducts();
+        }
+
+        function showGenericProducts() {
+            // Mostrar productos genéricos si no se reconoce el tipo de piel
+            const productsContainer = document.querySelector('.container');
+            productsContainer.innerHTML = `
+                <div class="product-card">
+                    <img src="Imagenes/bloqueador eucerim.png" alt="Producto genérico 1">
+                    <h3>Protector Solar Eucerim</h3>
+                    <p>Una loción solar para el cuerpo con protección UV alta y protección celular</p>
+                    <div class="price">S/.134.00</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/Limpiador facial.jpg" alt="Producto genérico 2">
+                    <h3>Limpiador Facial Hidratante Cerave</h3>
+                    <p>Elimina la suciedad, la grasa y el maquillaje sin eliminar el equilibrio de humedad natural de la piel.</p>
+                    <div class="price">S/60.40</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/hidratante ligero.jpg" alt="Producto genérico 2">
+                    <h3>Hidratante Ligero Neutrogena</h3>
+                    <p>Contiene ácido hialurónico, el ingrediente estrella antiarrugas y es ideal para pieles normales.</p>
+                    <div class="price">S/47.20</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/exfoliante.jpg" alt="Producto genérico 2">
+                    <h3>Exfoliante con Ácido Láctico The Ordinary</h3>
+                    <p>Estimula la regeneración celular, disminuye cicatrices y manchas</p>
+                    <div class="price">S/.82.00</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/Serum Antioxidante.png" alt="Producto genérico 2">
+                    <h3>Serum Antioxidante La Roche Posay</h3>
+                    <p>Sérum renovador antiarrugas y con vitamina C10, ácido salicílico, neurosensina calmante que ayuda a reafirmar e iluminar la piel.</p>
+                    <div class="price">S/.203.00</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/mascarilla facial.jpg" alt="Producto genérico 2">
+                    <h3>Mascarilla Facial en Tela Garnier Skin Active Express</h3>
+                    <p>Ideal para humectar el rostro y darle más suavidad a la piel.</p>
+                    <div class="price">S/.14.00</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/tonico facial.png" alt="Producto genérico 2">
+                    <h3>Tónico Facial Nivea 2</h3>
+                    <p>Enriquecido con Hydramine y Aceite de Almendra, el Tónico Facial Suave tonifica cuidadosamente tu piel.</p>
+                    <div class="price">S/.36.00</div>
+                </div>
+                <div class="product-card">
+                    <img src="Imagenes/contorno ojos.jpg" alt="Producto genérico 2">
+                    <h3>Crema reparadora Contorno Ojos Cerave</h3>
+                    <p>Reduce ojeras y bolsas, es de rápida absorción y segura para la zona del ojo, siendo testeada oftalmológicamente.</p>
+                    <div class="price">S/.53.00</div>
+                </div>
+                <!-- Agregar más productos genéricos según sea necesario -->
+            `;
+        }
+    </script>
+</body>
+
+</html>

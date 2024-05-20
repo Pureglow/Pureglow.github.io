@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Página de registro para el sitio web de PUREGLOW">
+  <link rel="icon" type="image/x-icon" href="Imagenes/logo-pg.png" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PUREGLOW</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  <script defer src="funciones.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+</head>
+
+<body>
+  <header>
+    <div class="header-left"><a href="index.html">PUREGLOW</a></div>
+    <div class="header-center">
+        <span>Cuida tu piel, cuida tu brillo</span>
+    </div>
+    <div class="header-right" id="loginButtonContainer"> <!-- Contenedor del botón de inicio de sesión -->
+      <!-- Aquí se mostrará el botón de inicio de sesión o el nombre de usuario -->
+    </div>
+  </header>
+
+  <section id="container-slider">  
+    <a href="javascript: funcionEjecutar('anterior');" class="arrowPrev"><i class="fas fa-chevron-circle-left"></i></a>
+    <a href="javascript: funcionEjecutar('siguiente');" class="arrowNext"><i class="fas fa-chevron-circle-right"></i></a>
+    <ul class="listslider">
+      <li><a itlist="itList_0" href="#" class="item-select-slid"></a></li>
+      <li><a itlist="itList_1" href="#"></a></li>
+      <li><a itlist="itList_2" href="#"></a></li>
+    </ul>
+    <ul id="slider">
+      <li style="background-image: url('Imagenes/Img1.jpg'); z-index:0; opacity: 1;">
+        <div class="content_slider" >
+          <div>
+            <h2>Scan Total</h2>
+            <p>Scanea tu rostro y descubre como cuidar tu piel.</p>
+            <a href="Piel.html" target="_blank" class="btnSlider">Scanner</a>
+          </div>
+        </div>
+      </li>
+      <li style="background-image: url('Imagenes/carrusel2.jpg'); ">
+        <div class="content_slider" >
+          <div>
+            <h2>Descibre como proteger tu piel</h2>
+            <p>Scanea tu piel y descubre que productos te ayudarán a protegerla.</p>
+            <a href="Piel.html" target="_blank" class="btnSlider">Acceder a scanner</a>
+          </div>
+        </div>
+      </li>
+      <li style="background-image: url('Imagenes/carrusel3.jpeg'); ">
+        <div class="content_slider" >
+          <div>
+            <h2>Detecta imperfecciones</h2>
+            <p>Te ayudamos a reconerlas y a como borrarlas</p>
+            <a href="Imperfecciones.html" target="_blank" class="btnSlider">Acceder a scanner</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <script>
+    // Verificar si hay un nombre de usuario almacenado en el localStorage
+    var username = localStorage.getItem('username');
+
+    // Obtener el contenedor del botón de inicio de sesión
+    var loginButtonContainer = document.getElementById('loginButtonContainer');
+
+    // Si hay un nombre de usuario, mostrarlo en el encabezado
+    if (username) {
+      loginButtonContainer.innerHTML = '<span>Bienvenido, ' + username + '</span>';
+    } else {
+      // Si no hay un nombre de usuario, mostrar el botón de inicio de sesión
+      loginButtonContainer.innerHTML = '<a href="Login.html">Login</a>';
+    }
+  </script>
+
+  <script>
+    // Verificar si es la primera vez que se carga la página
+    if (!localStorage.getItem('Load')) {
+      // Limpiar los datos de usuario al cargar la página por primera vez
+      localStorage.removeItem('username');
+      localStorage.removeItem('password');
+      // Marcar que la página ya se ha cargado una vez
+      localStorage.setItem('Load', true);
+    }
+  </script>
+
+  <script>
+    // Limpiar los datos de usuario al iniciar la página
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
+  </script>
+</body>
+
+</html>
